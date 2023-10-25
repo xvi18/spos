@@ -1,0 +1,89 @@
+import java.util.*;
+import java.io.*;
+
+public class Optimalpg1 {
+    public static void main(String[] args) throws IOException {
+        Scanner sc = new Scanner(System.in);
+        int noOfPages, noOfFrames, flag1 = 0, flag2 = 0, flag3, i, j, k, pos = 0, max, hit = 0;
+        int faults = 0;
+        int temp[] = new int[10];
+
+        System.out.println("enter no of Frames:");
+        noOfFrames = sc.nextInt();
+        int frame[] = new int[noOfFrames];
+
+        System.out.println("Enter no of pages:");
+        noOfPages = sc.nextInt();
+
+        int pages[] = new int[noOfPages];
+        System.out.println("enter the pages:");
+
+        for (i = 0; i < noOfPages; i++)
+            pages[i] = sc.nextInt();
+
+        for (i = 0; i < noOfFrames; i++)
+            frame[i] = -1;
+
+        for (i = 0; i < noOfPages; i++) {
+            flag1 = flag2 = 0; // Reset the flags for each page
+
+            for (j = 0; j < noOfFrames; j++) {
+                if (frame[j] == pages[i]) {
+                    flag1 = flag2 = 1;
+                    hit++;
+                    break;
+                }
+            }
+
+            if (flag1 == 0) {
+                for (j = 0; j < noOfFrames; ++j) {
+                    if (frame[j] == -1) {
+                        faults++;
+                        frame[j] = pages[i];
+                        flag2 = 1;
+                        break;
+                    }
+                }
+            }
+
+            if (flag2 == 0) {
+                flag3 = 0;
+
+                for (j = 0; j < noOfFrames; ++j) {
+                    temp[j] = -1;
+
+                    for (k = i + 1; k < noOfPages; k++) {
+                        if (frame[j] == pages[k]) {
+                            temp[j] = k;
+                            break;
+                        }
+                    }
+                }
+
+                for (j = 0; j < noOfFrames; ++j) {
+                    if (temp[j] == -1) {
+                        pos = j;
+                        flag3 = 1;
+                        break;
+                    }
+                }
+
+                if (flag3 == 0) {
+                    max = temp[0];
+                    pos = 0;
+
+                    for (j = 1; j < noOfFrames; ++j) {
+                        if (temp[j] > max) {
+                            max = temp[j];
+                            pos = j;
+                        }
+                    }
+                }
+                frame[pos] = pages[i];
+                faults++;
+            }
+        }
+        System.out.println("\n\nTotal Page Faults: " + faults);
+        System.out.println("Total Page Hits: " + hit);
+    }
+}

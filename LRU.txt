@@ -1,0 +1,38 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+public class LRU {
+    public static void main(String[] args) {
+        Scanner sc= new Scanner(System.in);
+        System.out.println("\nhow may frames you want to insert");
+        int frames= sc.nextInt();
+
+        System.out.println("enter how many pages you want to insert");
+        int pg= sc.nextInt();
+
+        System.out.println("\nEnter pages");
+        int pages[]= new int[pg];
+        for(int i=0; i<pg; i++){
+            pages[i]=sc.nextInt();
+        }
+
+        ArrayList<Integer> s= new ArrayList<>(frames);
+        int  pagefault=0, pagehit=0;
+        for(int i:pages){
+            if(!s.contains(i)){
+                if(s.size()==frames){
+                    s.remove(0);
+                }else{
+                    s.add(i);
+                    pagefault++;
+                }
+                pagefault++;
+            }else{
+                s.remove(Integer.valueOf(i));
+                s.add(s.size(),i);
+            }
+        }
+        System.out.println("Page Fault:"+ pagefault );
+        System.out.println("Page HIts:"+ pagehit );
+
+    }
+}
